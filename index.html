@@ -1,0 +1,221 @@
+<!--
+  ______________________________________________________________________________________________
+ |                                                                                              |
+ |  Copyright 2024 ag-sanjjeev                                                                  |
+ |                                                                                              |
+ |  The source code is licensed under MIT-style License.                                        |
+ |  The usage, permission and condition are applicable to this source code as per license.      |
+ |  That can be found in LICENSE file or at https://opensource.org/licenses/MIT.                |
+ |______________________________________________________________________________________________|
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+	<!-- Styles -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" integrity="sha512-usVBAd66/NpVNfBge19gws2j6JZinnca12rAe2l+d+QkLU9fiG02O1X8Q6hepIpr/EYKZvKx/I9WsnujJuOmBA==" crossorigin="anonymous" referrerpolicy="no-referrer" media="all" />
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" media="all" />
+
+	<!-- <link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.css" media="all" /> -->
+	<!-- <link rel="stylesheet" type="text/css" href="../icons/fontawesome/css/all.css" media="all" /> -->
+
+	<title>Text Animation</title>
+</head>
+<body>
+
+	<!-- Text Animation Section -->
+	<section class="container-fluid">
+		
+		<!-- Form -->
+		<form class="row my-4" action="#" onsubmit="return false;">
+			
+			<!-- Input Textarea Field -->
+			<div class="col-12 mb-3">
+				<label for="inputText">Input Text</label>
+				<textarea name="inputText" id="inputText" class="form-control" autofocus></textarea>
+			</div>
+			<!-- ./ Input Textarea Field -->
+
+			<!-- Canvas Width Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="canvasWidth">Width</label>
+				<div class="input-group">
+					<input type="number" name="canvasWidth" id="canvasWidth" class="form-control" min="100" value="774" />
+					<button type="button" id="setDeviceWidthButton" class="btn btn-outline-secondary" title="set current device width">
+						<i class="fa fa-bullseye"></i>
+					</button>
+				</div>
+			</div>
+			<!-- ./ Canvas Width Input Field -->
+
+			<!-- Canvas Height Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="canvasHeight">Height</label>
+				<div class="input-group">
+					<input type="number" name="canvasHeight" id="canvasHeight" class="form-control" min="100" value="1376" />
+					<button type="button" id="setDeviceHeightButton" class="btn btn-outline-secondary" title="set current device height">
+						<i class="fa fa-bullseye"></i>
+					</button>					
+				</div>
+			</div>
+			<!-- ./ Canvas Height Input Field -->
+
+			<!-- FPS Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="fps">FPS</label>
+				<input type="number" name="fps" id="fps" class="form-control" min="10" value="30" />
+			</div>
+			<!-- ./ FPS Input Field -->
+
+			<!-- Animation Scale Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="animationScale">Animation Scale</label>
+				<input type="number" name="animationScale" id="animationScale" class="form-control" min="100" value="100" />
+			</div>
+			<!-- ./ Animation Scale Input Field -->
+
+			<!-- In Duration Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="animationInDuration">In-Duration</label>
+				<input type="number" name="inDuration" id="inDuration" class="form-control" min="0" value="200" />
+			</div>
+			<!-- ./ In Duration Input Field -->
+
+			<!-- Out Duration Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="animationOutDuration">Out-Duration</label>
+				<input type="number" name="outDuration" id="outDuration" class="form-control" min="0" value="200" />
+			</div>
+			<!-- ./ Out Duration Input Field -->
+
+			<!-- Animation Duration Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="animationDuration">Animation Duration</label>
+				<input type="number" name="animationDuration" id="animationDuration" class="form-control" min="0" value="200" />
+			</div>
+			<!-- ./ Animation Duration Input Field -->
+
+			<!-- Horizontal Padding Input Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="paddingX">Horizontal Padding</label>
+				<input type="number" name="paddingX" id="paddingX" class="form-control" min="0" value="100" />
+			</div>
+			<!-- ./ Horizontal Padding Input Field -->
+
+			<!-- Vertical Padding Input Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="paddingY">Vertical Padding</label>
+				<input type="number" name="paddingY" id="paddingY" class="form-control" min="0" value="100" />
+			</div>
+			<!-- ./ Vertical Padding Input Field -->
+
+			<!-- Line Height Input Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="lineHeight">Line Height</label>
+				<input type="number" name="lineHeight" id="lineHeight" class="form-control" min="1" value="10" />
+			</div>
+			<!-- ./ Line Height Input Field -->
+
+			<!-- font Size Input Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="fontSize">Font Size</label>
+				<input type="number" name="fontSize" id="fontSize" class="form-control" min="1" value="40" />
+			</div>
+			<!-- ./ Font Size Input Field -->
+
+			<!-- Font Family Input Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="textFontFamily">Text Font Family</label>
+				<div class="input-group mb-3">
+					<input type="text" name="textFontFamily" id="textFontFamily" class="form-control" value="Ysabeau Infant" placeholder="(e.g., 'Open Sans', 'Arial'):" />
+					<button class="btn btn-outline-primary my-0" type="button" id="setFontButton">Set Font</button>
+				</div>
+			</div>
+			<!-- ./ Font Family Input Field -->
+
+			<!-- Font Style Select Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="fontStyle">Font Style</label>
+				<select name="fontStyle" id="fontStyle" class="form-control">
+					<option value="" selected>Normal</option>
+					<option value="bold">Bold</option>
+					<option value="italic">Italic</option>
+					<option value="underline">Underline</option>
+					<option value="bold italic">Bold & Italic</option>
+					<option value="bold underline">Bold & Underline</option>
+					<option value="italic underline">Italic & Underline</option>
+					<option value="bold italic underline">Bold, Italic & Underline</option>
+				</select>
+			</div>
+			<!-- ./ Font Style Select Field -->
+
+			<!-- Text Alignment Select Field -->
+			<div class="col-md-6 form-group mb-3">
+				<label for="textAlignment">Text Alignment</label>
+				<select name="textAlignment" id="textAlignment" class="form-control">
+					<option value="left" selected>Left</option>
+					<option value="center">Center</option>
+					<option value="right">Right</option>
+					<option value="justified">Justified</option>
+				</select>
+			</div>
+			<!-- ./ Text Alignment Select Field -->
+
+			<!-- Text Color Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="textColor">Text Color</label>
+				<input type="color" name="textColor" id="textColor" class="form-control" value="#ffffff" />
+			</div>
+			<!-- ./ Text Color Input Field -->
+
+			<!-- Background Color Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="backgroundColor">Background Color</label>
+				<input type="color" name="backgroundColor" id="backgroundColor" class="form-control" value="#000000" />
+			</div>
+			<!-- ./ Background Color Input Field -->
+
+			<!-- Horizontal Divider -->
+			<div class="col-12 mb-3">
+				<hr class="w-100" />
+			</div>
+			<!-- ./ Horizontal Divider -->
+
+			<!-- Buttons Section -->
+			<div class="col-md-12 text-center mb-3">
+				<!-- Play Button -->
+				<button type="button" id="playButton" class="btn btn-outline-primary">Play</button>
+				<!-- ./ Play Buttons -->
+				<!-- Record Button -->
+				<button type="button" id="recordButton" class="btn btn-outline-danger" data-state='stopped'>Start Record</button>
+				<!-- ./ Record Button -->
+				<button type="button" id="fullScreen" class="btn btn-outline-warning">Full Screen</button>
+			</div>
+			<!-- ./ Buttons Section -->
+
+			<!-- Canvas Container -->
+			<div class="col-md-12 w-100 overflow-auto mb-3">
+				<canvas id="canvas1"></canvas>
+			</div>
+			<!-- ./ Canvas Container -->
+
+		</form>
+		<!-- ./ Form -->
+
+	</section>
+	<!-- ./ Text Animation Section -->
+
+	<!-- Scripts -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js" integrity="sha512-72WD92hLs7T5FAXn3vkNZflWG6pglUDDpm87TeQmfSg8KnrymL2G30R7as4FmTwhgu9H7eSzDCX3mjitSecKnw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<!-- <script type="text/javascript" src="../bootstrap/bootstrap.bundle.js"></script> -->
+
+	<!-- Main Script -->
+	<script type="text/javascript" src="./main.js"></script>
+</body>
+</html>
