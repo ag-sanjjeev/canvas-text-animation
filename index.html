@@ -21,8 +21,8 @@
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" media="all" />
 
-	<!-- <link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.css" media="all" /> -->
-	<!-- <link rel="stylesheet" type="text/css" href="../icons/fontawesome/css/all.css" media="all" /> -->
+	<link rel="stylesheet" type="text/css" href="../bootstrap/bootstrap.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="../icons/fontawesome/css/all.css" media="all" />
 
 	<title>Text Animation</title>
 </head>
@@ -37,7 +37,13 @@
 			<!-- Input Textarea Field -->
 			<div class="col-12 mb-3">
 				<label for="inputText">Input Text</label>
-				<textarea name="inputText" id="inputText" class="form-control" autofocus></textarea>
+				<textarea name="inputText" id="inputText" class="form-control" autofocus>Welcome 
+This is sample text
+அறத்திணை
+வலைதளத்திற்கு வருக
+அடடே! தேடி வந்த பக்கம் காணவில்லை. ஒருவேளை, நீக்கப்பட்டிருக்கலாம் அல்லது தவறுதலாக இங்கே வந்திருக்கலாம்.
+கவலைப்படாதீர்!
+முகப்பு பக்கத்தில் சென்று பார்வையிடவும்...</textarea>
 			</div>
 			<!-- ./ Input Textarea Field -->
 
@@ -65,33 +71,144 @@
 			</div>
 			<!-- ./ Canvas Height Input Field -->
 
-			<!-- FPS Input Field -->
+			<!-- In Transition Select Field -->
 			<div class="col-md-6 mb-3">
-				<label for="fps">FPS</label>
-				<input type="number" name="fps" id="fps" class="form-control" min="10" value="30" />
+				<label for="inTransition">In Transition</label>
+				<select name="inTransition" id="inTransition" class="form-control">
+					<optgroup label="Back In"> 
+						<option value="BackInDown">BackInDown</option>
+						<option value="BackInLeft">BackInLeft</option>
+						<option value="BackInRight">BackInRight</option>
+						<option value="BackInUp">BackInUp</option>
+					</optgroup>
+					<optgroup label="Bounce In">
+						<option value="BounceIn">BounceIn</option>
+						<option value="BounceInDown">BounceInDown</option>
+						<option value="BounceInLeft">BounceInLeft</option>
+						<option value="BounceInRight">BounceInRight</option>
+						<option value="BounceInUp">BounceInUp</option>
+					</optgroup>
+					<optgroup label="Fade In">
+						<option value="FadeIn">FadeIn</option>
+						<option value="FadeInDown">FadeInDown</option>
+						<option value="FadeInLeft">FadeInLeft</option>
+						<option value="FadeInRight">FadeInRight</option>
+						<option value="FadeInUp">FadeInUp</option>
+						<option value="FadeInTopLeft">FadeInTopLeft</option>
+						<option value="FadeInTopRight">FadeInTopRight</option>
+						<option value="FadeInBottomLeft">FadeInBottomLeft</option>
+						<option value="FadeInBottomRight">FadeInBottomRight</option>
+					</optgroup>
+					<optgroup label="Flip In">
+						<option value="FlipInX">FlipInX</option>
+						<option value="FlipInY">FlipInY</option>						
+					</optgroup>
+					<optgroup label="Rotate In">
+						<option value="RotateIn">RotateIn</option>
+						<option value="RotateInDownLeft">RotateInDownLeft</option>
+						<option value="RotateInDownRight">RotateInDownRight</option>
+						<option value="RotateInUpLeft">RotateInUpLeft</option>
+						<option value="RotateInUpRight">RotateInUpRight</option>
+					</optgroup>
+					<optgroup label="Roll In">
+						<option value="RollIn">RollIn</option>
+					</optgroup>
+					<optgroup label="Zoom In">
+						<option value="ZoomIn">ZoomIn</option>
+						<option value="ZoomInDown">ZoomInDown</option>
+						<option value="ZoomInLeft">ZoomInLeft</option>
+						<option value="ZoomInRight">ZoomInRight</option>
+						<option value="ZoomInUp">ZoomInUp</option>
+					</optgroup>
+					<optgroup label="Slide In">
+						<option value="SlideInDown">SlideInDown</option>
+						<option value="SlideInLeft">SlideInLeft</option>
+						<option value="SlideInRight">SlideInRight</option>
+						<option value="SlideInUp">SlideInUp</option>
+					</optgroup>
+				</select>
 			</div>
-			<!-- ./ FPS Input Field -->
+			<!-- ./ In Transition Select Field -->			
+
+			<!-- In Duration Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="inDuration">In-Duration</label>
+				<input type="number" name="inDuration" id="inDuration" class="form-control" min="0" value="200" />
+			</div>
+			<!-- ./ In Duration Input Field -->
+
+			<!-- Out Transition Select Field -->
+			<div class="col-md-6 mb-3">
+				<label for="outTransition">Out Transition</label>
+				<select name="outTransition" id="outTransition" class="form-control">
+					<optgroup label="Back Out"> 
+						<option value="BackOutDown">BackOutDown</option>
+						<option value="BackOutLeft">BackOutLeft</option>
+						<option value="BackOutRight">BackOutRight</option>
+						<option value="BackOutUp">BackOutUp</option>
+					</optgroup>
+					<optgroup label="Bounce Out">
+						<option value="BounceOut">BounceOut</option>
+						<option value="BounceOutDown">BounceOutDown</option>
+						<option value="BounceOutLeft">BounceOutLeft</option>
+						<option value="BounceOutRight">BounceOutRight</option>
+						<option value="BounceOutUp">BounceOutUp</option>
+					</optgroup>
+					<optgroup label="Fade Out">
+						<option value="FadeOut">FadeOut</option>
+						<option value="FadeOutDown">FadeOutDown</option>
+						<option value="FadeOutLeft">FadeOutLeft</option>
+						<option value="FadeOutRight">FadeOutRight</option>
+						<option value="FadeOutUp">FadeOutUp</option>
+						<option value="FadeOutTopLeft">FadeOutTopLeft</option>
+						<option value="FadeOutTopRight">FadeOutTopRight</option>
+						<option value="FadeOutBottomLeft">FadeOutBottomLeft</option>
+						<option value="FadeOutBottomRight">FadeOutBottomRight</option>
+					</optgroup>
+					<optgroup label="Flip Out">
+						<option value="FlipOutX">FlipOutX</option>
+						<option value="FlipOutY">FlipOutY</option>						
+					</optgroup>
+					<optgroup label="Rotate Out">
+						<option value="RotateOut">RotateOut</option>
+						<option value="RotateOutDownLeft">RotateOutDownLeft</option>
+						<option value="RotateOutDownRight">RotateOutDownRight</option>
+						<option value="RotateOutUpLeft">RotateOutUpLeft</option>
+						<option value="RotateOutUpRight">RotateOutUpRight</option>
+					</optgroup>
+					<optgroup label="Roll Out">
+						<option value="RollOut">RollOut</option>
+					</optgroup>
+					<optgroup label="Zoom Out">
+						<option value="ZoomOut">ZoomOut</option>
+						<option value="ZoomOutDown">ZoomOutDown</option>
+						<option value="ZoomOutLeft">ZoomOutLeft</option>
+						<option value="ZoomOutRight">ZoomOutRight</option>
+						<option value="ZoomOutUp">ZoomOutUp</option>
+					</optgroup>
+					<optgroup label="Slide Out">
+						<option value="SlideOutDown">SlideOutDown</option>
+						<option value="SlideOutLeft">SlideOutLeft</option>
+						<option value="SlideOutRight">SlideOutRight</option>
+						<option value="SlideOutUp">SlideOutUp</option>
+					</optgroup>
+				</select>
+			</div>
+			<!-- ./ Out Transition Select Field -->
+
+			<!-- Out Duration Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="outDuration">Out-Duration</label>
+				<input type="number" name="outDuration" id="outDuration" class="form-control" min="0" value="200" />
+			</div>
+			<!-- ./ Out Duration Input Field -->
 
 			<!-- Animation Scale Input Field -->
 			<div class="col-md-6 mb-3">
 				<label for="animationScale">Animation Scale</label>
 				<input type="number" name="animationScale" id="animationScale" class="form-control" min="100" value="100" />
 			</div>
-			<!-- ./ Animation Scale Input Field -->
-
-			<!-- In Duration Input Field -->
-			<div class="col-md-6 mb-3">
-				<label for="animationInDuration">In-Duration</label>
-				<input type="number" name="inDuration" id="inDuration" class="form-control" min="0" value="200" />
-			</div>
-			<!-- ./ In Duration Input Field -->
-
-			<!-- Out Duration Input Field -->
-			<div class="col-md-6 mb-3">
-				<label for="animationOutDuration">Out-Duration</label>
-				<input type="number" name="outDuration" id="outDuration" class="form-control" min="0" value="200" />
-			</div>
-			<!-- ./ Out Duration Input Field -->
+			<!-- ./ Animation Scale Input Field -->	
 
 			<!-- Animation Duration Input Field -->
 			<div class="col-md-6 mb-3">
@@ -99,6 +216,13 @@
 				<input type="number" name="animationDuration" id="animationDuration" class="form-control" min="0" value="200" />
 			</div>
 			<!-- ./ Animation Duration Input Field -->
+
+			<!-- FPS Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="fps">FPS</label>
+				<input type="number" name="fps" id="fps" class="form-control" min="10" value="30" />
+			</div>
+			<!-- ./ FPS Input Field -->
 
 			<!-- Horizontal Padding Input Field -->
 			<div class="col-md-6 form-group mb-3">
@@ -142,7 +266,7 @@
 			<div class="col-md-6 form-group mb-3">
 				<label for="fontStyle">Font Style</label>
 				<select name="fontStyle" id="fontStyle" class="form-control">
-					<option value="" selected>Normal</option>
+					<option value="">Normal</option>
 					<option value="bold">Bold</option>
 					<option value="italic">Italic</option>
 					<option value="underline">Underline</option>
@@ -158,7 +282,7 @@
 			<div class="col-md-6 form-group mb-3">
 				<label for="textAlignment">Text Alignment</label>
 				<select name="textAlignment" id="textAlignment" class="form-control">
-					<option value="left" selected>Left</option>
+					<option value="left">Left</option>
 					<option value="center">Center</option>
 					<option value="right">Right</option>
 					<option value="justified">Justified</option>
@@ -213,7 +337,7 @@
 	<!-- Scripts -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js" integrity="sha512-72WD92hLs7T5FAXn3vkNZflWG6pglUDDpm87TeQmfSg8KnrymL2G30R7as4FmTwhgu9H7eSzDCX3mjitSecKnw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-	<!-- <script type="text/javascript" src="../bootstrap/bootstrap.bundle.js"></script> -->
+	<script type="text/javascript" src="../bootstrap/bootstrap.bundle.js"></script>
 
 	<!-- Main Script -->
 	<script type="text/javascript" src="./main.js"></script>
