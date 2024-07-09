@@ -30,8 +30,8 @@ const canvasHeight = document.getElementById('canvasHeight');
 
 const animationScale = document.getElementById('animationScale');
 const fps = document.getElementById('fps');
-const inDuration = document.getElementById('inDuration');
-const outDuration = document.getElementById('outDuration');
+const inTransitionDuration = document.getElementById('inTransitionDuration');
+const outTransitionDuration = document.getElementById('outTransitionDuration');
 const animationDuration = document.getElementById('animationDuration');
 
 const paddingX = document.getElementById('paddingX');
@@ -64,7 +64,7 @@ const easeInCubic = (t) => t * t * t;
 let startTime = null;
 // Easing function (easeInOutQuad) for smoother animation
 Math.easeInOutQuad = function (t, b, c) {
-    t /= (Number(inDuration.value) + Number(animationDuration.value) + Number(outDuration.value)) / 2;
+    t /= (Number(inTransitionDuration.value) + Number(animationDuration.value) + Number(outTransitionDuration.value)) / 2;
     if (t < 1) return c / 2 * t * t + b;
     t--;
     return -c / 2 * (t * (t - 2) - 1) + b;
@@ -168,6 +168,10 @@ class TextAnimation {
 		canvas.width = canvasWidth.value;
 		canvas.height = canvasHeight.value;
 		canvas.style.backgroundColor = this.backgroundColor;
+		this.redColor = 0;
+		this.greenColor = 0;
+		this.blueColor = 0;
+		this.alphaTransparent = 0;
 		this.x = this.paddingX / 2;
 		this.y = 0;	
 
@@ -175,13 +179,14 @@ class TextAnimation {
 		this.underlineHeightSpace = 15;
 
 		this.lineIndex = 0;
-		this.inDuration = 0;
-		this.outDuration = 0;
+		this.inTransitionDuration = 0;
+		this.outTransitionDuration = 0;
 		this.animationDuration = 0;
+		this.totalCurrentAnimationDuration = 0;
 		this.animationStartTime = 0;
 
 		this.timer = 0;
-		this.lastTimeStamp = 0;		
+		this.lastTimeStamp = 0;
 
 	}	
 	// animateText method
@@ -194,19 +199,21 @@ class TextAnimation {
 		canvasCTX.clearRect(0, 0, canvas.width, canvas.height);
 		
 		setCanvasBackground();
+		this.textColor = textColor.value;
 
+		this.totalCurrentAnimationDuration = Number(this.inTransitionDuration) + Number(this.animationDuration) + Number(this.outTransitionDuration);
 
-		if (this.timer == 0) { this.timer = timeStamp; }
+		if (this.lastTimeStamp == 0) { this.lastTimeStamp = timeStamp; }
 		
 		if (this.lineIndex >= this.inputText.length) {
 			this.stopAnimation();
-		} else if (timeStamp - this.timer > this.animationDuration) {
-			this.lineIndex++;	
-			console.clear();
-			this.timer = timeStamp;
+		} else if (timeStamp - this.lastTimeStamp > this.totalCurrentAnimationDuration) {
+			this.lineIndex++;		
+			this.alphaTransparent = 0;		
+			this.lastTimeStamp = timeStamp;
 			this.animationFrameReference = window.requestAnimationFrame(this.animate.bind(this));
 		} else {
-			this.showInOut(timeStamp);			
+			this.fadeInOut(timeStamp);			
 			this.animationFrameReference = window.requestAnimationFrame(this.animate.bind(this));
 		}	
 	}
@@ -315,6 +322,124 @@ class TextAnimation {
 		}
 	}
 
+	// fadeInOut method
+	fadeInOut(timeStamp) {
+
+		let lines;
+		let lineWidth;
+		let tempLineHeight;
+		let newTempLine;
+		let underlineHeight = 0;
+		let rgbColor = null;	
+
+		lines = this.inputText[this.lineIndex];
+
+		this.wrapText(lines);
+
+		lines = this.#wrappedText;
+		
+		tempLineHeight = (Number(this.fontSize) + Number(this.lineHeight));
+		this.y = Number(canvas.height/2);// - ((Number(this.fontSize) + Number(this.lineHeight)) * lines.length * 0.5);
+		this.y -= lines.length * 0.5 * tempLineHeight;		
+
+		// there is no text justified alignment
+		if (this.textAlignment != '') {
+			canvasCTX.textAlign = (this.textAlignment != 'justified') ? this.textAlignment : 'left';
+		}
+
+		for (let i = 0; i < lines.length; i++) {
+
+			let textFontStyle = this.fontStyle.replaceAll('underline', '').trim();
+			// setting font style
+			canvasCTX.font = `${textFontStyle} ${this.fontSize}px ${this.fontFamily}, san-serif`;	
+	        
+			lineWidth = canvasCTX.measureText(lines[i]).width;
+
+			newTempLine = lines[i];
+
+
+			// assigning x co-ordinates for right, center and justify text alignment 
+			if (this.textAlignment == 'right') {
+				this.x = (Number(this.x) + Number(canvas.width) - this.paddingX) / 2;
+			} else if (this.textAlignment == 'center') {
+				this.x = (Number(canvas.width)) / 2;
+			} else if (this.textAlignment == 'justified') {
+
+				// checking if it is an empty line
+				if (lines[i].trim() != '') {
+
+					// getting free space width metrics
+					let noOfFreeSpaces = (canvas.width - this.paddingX) - lineWidth;
+
+					// proceeds only if any whitespace
+					if (lines[i].indexOf(' ') !== -1) {
+
+						// getting number of whitespace in the line
+						let noOfWhiteSpaces = lines[i].match(/([\s]+)/g).length;
+
+						// if it has atleast one whitespace to proceed
+						if (noOfFreeSpaces > 0) {
+							
+							// measuring single whitespace width metric for text style
+							let whiteSpaceWidth = canvasCTX.measureText(' ').width;
+
+							// calculating new white space counts
+							let newWhiteSpaces = Math.ceil((noOfFreeSpaces / noOfWhiteSpaces) / whiteSpaceWidth);
+							
+							// appending and sharing equal whitespaces to all whitespaces in the line
+							let whiteSpaces = '';
+							for (let _i = 0; _i < newWhiteSpaces; _i++) {
+								whiteSpaces += ' ';
+							}
+
+							newTempLine = lines[i].trim();
+							newTempLine = newTempLine.replace(/\s/g, whiteSpaces);
+						}						
+					}
+				}
+
+			}
+
+			/* FadeIn Effect */
+			if (timeStamp - this.lastTimeStamp < this.inTransitionDuration) {				
+				this.alphaTransparent = (Number(timeStamp - this.lastTimeStamp) / Number(this.inTransitionDuration));				
+			} else if (timeStamp - this.lastTimeStamp < Number(this.inTransitionDuration) + Number(this.animationDuration)) { /* Static Color */
+				this.alphaTransparent = 1;		
+			} else if (timeStamp - this.lastTimeStamp < this.totalCurrentAnimationDuration) { /* FadeOut Effect */
+				this.alphaTransparent = 1 - (Number(timeStamp - this.lastTimeStamp - this.inTransitionDuration - this.animationDuration) / Number(this.outTransitionDuration));	
+			}
+
+			// convert hex color code into rgb color value
+			rgbColor = this.hexToRGB(this.textColor);
+			
+			/* Filling Text */
+			canvasCTX.fillStyle = `rgba(${rgbColor.red},${rgbColor.green},${rgbColor.blue}, ${this.alphaTransparent})`; //this.textColor;	
+			// canvasCTX.fillStyle = this.textColor;
+			canvasCTX.fillText(newTempLine, this.x,this.y);	
+
+			// applying underline font style
+			if (this.fontStyle.indexOf('underline') !== -1) {
+				// default co-ordinates will be followed for left text alignment	
+				let underlineX = this.x;
+				// measuring width metrics for new processed line text
+				lineWidth = canvasCTX.measureText(newTempLine).width;
+				// setting underline color as same as text color
+				canvasCTX.fillStyle = this.textColor;			
+				// underline x co-ordinate will be differs for right and center alignment
+				if (this.textAlignment == 'right') {
+					underlineX = (canvas.width - this.paddingX) - lineWidth;
+				} else if (this.textAlignment == 'center') {
+					underlineX = Number(this.x) - Number(lineWidth / 2);					
+				}			
+
+				// filling rectangular line as an underline below to text
+				canvasCTX.fillRect(underlineX, Number(this.y) + this.underlineHeightSpace, lineWidth, this.underlineBarHeight);					
+			}
+
+			this.y += Number(tempLineHeight) + Number(this.underlineHeightSpace) + Number(this.underlineBarHeight);
+		}
+	}
+
 	// stopAnimation method
 	stopAnimation () {
 		// canceling or stopping animation
@@ -332,6 +457,27 @@ class TextAnimation {
 		for (const line of this.#wrappedText) {
 			this.totalTextHeight += Number(this.fontSize) + Number(this.lineHeight);
 		}
+	}
+
+	hexToRGB(hex) {
+		hex = hex.replace('#', '');
+
+		// handle for short hex code
+		if (hex.length === 3) {
+			hex = hex.split('').map(x => x + x).join('');
+		}
+
+		// validate hex code
+		if (!/^[0-9A-Fa-f]{6}$/.test(hex)) {
+			throw new Error('Invalid hex color code');
+		}
+
+		// convert into base 16 integer
+		const r = parseInt(hex.slice(0,2), 16);
+		const g = parseInt(hex.slice(2,4), 16);
+		const b = parseInt(hex.slice(4,6), 16);
+
+		return {red: r, green: g, blue: b};
 	}
 
 	// wrapText method
@@ -406,14 +552,18 @@ function setCanvasBackground(color='') {
 }
 
 /* Event Listeners */
+// textColor change event listener
+
+
+
 // playButton click event listener
 playButton.addEventListener('click', function(e) {
 	let state = playButton.innerText.toLowerCase();
 
 	if (state == 'play') {		
 		var animObj = new TextAnimation(inputText.value);
-		animObj.inDuration = inDuration.value;
-		animObj.outDuration = outDuration.value;
+		animObj.inTransitionDuration = inTransitionDuration.value;
+		animObj.outTransitionDuration = outTransitionDuration.value;
 		animObj.animationDuration = animationDuration.value;
 		animObj.animate(0);
 		prefObj.animationObject = animObj;		
@@ -428,6 +578,10 @@ playButton.addEventListener('click', function(e) {
 fullScreen.addEventListener('click', function(e) {
 	canvas.requestFullscreen();
 });
+
+window.addEventListener('animationend', function() {
+	console.log('ended');
+}, false);
 
 window.addEventListener('load', function() {
 	setCanvasSize();
