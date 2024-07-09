@@ -59,6 +59,13 @@ const canvasCTX = canvas.getContext('2d');
 let x = 0;
 let y = 0;
 
+// custom animation end event
+const animationEndEvent = new CustomEvent('animationEnded', {
+	detail: {
+		message: 'Animation Frame Ended'
+	}
+});
+
 const easeInCubic = (t) => t * t * t;
 
 let startTime = null;
@@ -444,6 +451,7 @@ class TextAnimation {
 	stopAnimation () {
 		// canceling or stopping animation
 		window.cancelAnimationFrame(this.animationFrameReference);
+		window.dispatchEvent(animationEndEvent);
 		this.timer = 0;
 		this.lastTimeStamp = 0;
 		this.animationStartTime = 0;
@@ -579,8 +587,8 @@ fullScreen.addEventListener('click', function(e) {
 	canvas.requestFullscreen();
 });
 
-window.addEventListener('animationend', function() {
-	console.log('ended');
+window.addEventListener('animationEnded', function() {
+	playButton.innerText = 'Play'
 }, false);
 
 window.addEventListener('load', function() {
