@@ -30,6 +30,7 @@ const canvasHeight = document.getElementById('canvasHeight');
 
 const animationScale = document.getElementById('animationScale');
 const fps = document.getElementById('fps');
+const transition = document.getElementById('transition');
 const inTransitionDuration = document.getElementById('inTransitionDuration');
 const outTransitionDuration = document.getElementById('outTransitionDuration');
 const animationDuration = document.getElementById('animationDuration');
@@ -191,6 +192,7 @@ class TextAnimation {
 		this.animationDuration = 0;
 		this.totalCurrentAnimationDuration = 0;
 		this.animationStartTime = 0;
+		this.transition = null;
 
 		this.timer = 0;
 		this.lastTimeStamp = 0;
@@ -206,6 +208,7 @@ class TextAnimation {
 		canvasCTX.clearRect(0, 0, canvas.width, canvas.height);
 		
 		setCanvasBackground();
+		this.transition = transition.value;
 		this.textColor = textColor.value;
 
 		this.totalCurrentAnimationDuration = Number(this.inTransitionDuration) + Number(this.animationDuration) + Number(this.outTransitionDuration);
@@ -220,9 +223,21 @@ class TextAnimation {
 			this.lastTimeStamp = timeStamp;
 			this.animationFrameReference = window.requestAnimationFrame(this.animate.bind(this));
 		} else {
-			this.fadeInOut(timeStamp);			
+			this.switchTransition(timeStamp);			
 			this.animationFrameReference = window.requestAnimationFrame(this.animate.bind(this));
 		}	
+	}
+
+	switchTransition(timeStamp) {
+
+		if (this.transition == 'showInOut') {
+			this.showInOut(timeStamp);
+		} else if (this.transition == 'fadeInOut') {
+			this.fadeInOut(timeStamp);
+		} else {
+			throw Error('Unknown transition');
+		}
+
 	}
 
 	// showInOut method

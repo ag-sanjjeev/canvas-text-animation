@@ -73,59 +73,10 @@ This is sample text
 
 			<!-- In Transition Select Field -->
 			<div class="col-md-6 mb-3">
-				<label for="inTransition">In Transition</label>
-				<select name="inTransition" id="inTransition" class="form-control">
-					<optgroup label="Back In"> 
-						<option value="BackInDown">BackInDown</option>
-						<option value="BackInLeft">BackInLeft</option>
-						<option value="BackInRight">BackInRight</option>
-						<option value="BackInUp">BackInUp</option>
-					</optgroup>
-					<optgroup label="Bounce In">
-						<option value="BounceIn">BounceIn</option>
-						<option value="BounceInDown">BounceInDown</option>
-						<option value="BounceInLeft">BounceInLeft</option>
-						<option value="BounceInRight">BounceInRight</option>
-						<option value="BounceInUp">BounceInUp</option>
-					</optgroup>
-					<optgroup label="Fade In">
-						<option value="FadeIn">FadeIn</option>
-						<option value="FadeInDown">FadeInDown</option>
-						<option value="FadeInLeft">FadeInLeft</option>
-						<option value="FadeInRight">FadeInRight</option>
-						<option value="FadeInUp">FadeInUp</option>
-						<option value="FadeInTopLeft">FadeInTopLeft</option>
-						<option value="FadeInTopRight">FadeInTopRight</option>
-						<option value="FadeInBottomLeft">FadeInBottomLeft</option>
-						<option value="FadeInBottomRight">FadeInBottomRight</option>
-					</optgroup>
-					<optgroup label="Flip In">
-						<option value="FlipInX">FlipInX</option>
-						<option value="FlipInY">FlipInY</option>						
-					</optgroup>
-					<optgroup label="Rotate In">
-						<option value="RotateIn">RotateIn</option>
-						<option value="RotateInDownLeft">RotateInDownLeft</option>
-						<option value="RotateInDownRight">RotateInDownRight</option>
-						<option value="RotateInUpLeft">RotateInUpLeft</option>
-						<option value="RotateInUpRight">RotateInUpRight</option>
-					</optgroup>
-					<optgroup label="Roll In">
-						<option value="RollIn">RollIn</option>
-					</optgroup>
-					<optgroup label="Zoom In">
-						<option value="ZoomIn">ZoomIn</option>
-						<option value="ZoomInDown">ZoomInDown</option>
-						<option value="ZoomInLeft">ZoomInLeft</option>
-						<option value="ZoomInRight">ZoomInRight</option>
-						<option value="ZoomInUp">ZoomInUp</option>
-					</optgroup>
-					<optgroup label="Slide In">
-						<option value="SlideInDown">SlideInDown</option>
-						<option value="SlideInLeft">SlideInLeft</option>
-						<option value="SlideInRight">SlideInRight</option>
-						<option value="SlideInUp">SlideInUp</option>
-					</optgroup>
+				<label for="transition">Transition</label>
+				<select name="transition" id="transition" class="form-control">			
+					<option value="showInOut">Show In Out</option>
+					<option value="fadeInOut">Fade In Out</option>				
 				</select>
 			</div>
 			<!-- ./ In Transition Select Field -->			
@@ -138,7 +89,7 @@ This is sample text
 			<!-- ./ In Duration Input Field -->
 
 			<!-- Out Transition Select Field -->
-			<div class="col-md-6 mb-3">
+			<!-- <div class="col-md-6 mb-3">
 				<label for="outTransition">Out Transition</label>
 				<select name="outTransition" id="outTransition" class="form-control">
 					<optgroup label="Back Out"> 
@@ -193,7 +144,7 @@ This is sample text
 						<option value="SlideOutUp">SlideOutUp</option>
 					</optgroup>
 				</select>
-			</div>
+			</div> -->
 			<!-- ./ Out Transition Select Field -->
 
 			<!-- Out Duration Input Field -->
@@ -201,14 +152,7 @@ This is sample text
 				<label for="outTransitionDuration">Out-Transition Duration</label>
 				<input type="number" name="outTransitionDuration" id="outTransitionDuration" class="form-control" min="0" value="1000" />
 			</div>
-			<!-- ./ Out Duration Input Field -->
-
-			<!-- Animation Scale Input Field -->
-			<div class="col-md-6 mb-3">
-				<label for="animationScale">Animation Scale</label>
-				<input type="number" name="animationScale" id="animationScale" class="form-control" min="100" value="100" />
-			</div>
-			<!-- ./ Animation Scale Input Field -->	
+			<!-- ./ Out Duration Input Field -->			
 
 			<!-- Animation Duration Input Field -->
 			<div class="col-md-6 mb-3">
@@ -216,6 +160,13 @@ This is sample text
 				<input type="number" name="animationDuration" id="animationDuration" class="form-control" min="0" value="2000" />
 			</div>
 			<!-- ./ Animation Duration Input Field -->
+
+			<!-- Animation Scale Input Field -->
+			<div class="col-md-6 mb-3">
+				<label for="animationScale">Animation Scale</label>
+				<input type="number" name="animationScale" id="animationScale" class="form-control" min="100" value="100" />
+			</div>
+			<!-- ./ Animation Scale Input Field -->	
 
 			<!-- FPS Input Field -->
 			<div class="col-md-6 mb-3">
