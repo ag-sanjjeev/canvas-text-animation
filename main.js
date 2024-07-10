@@ -234,6 +234,8 @@ class TextAnimation {
 			this.showInOut(timeStamp);
 		} else if (this.transition == 'fadeInOut') {
 			this.fadeInOut(timeStamp);
+		} else if (this.transition == 'zoomInOut') {
+			this.zoomInOut(timeStamp);
 		} else {
 			throw Error('Unknown transition');
 		}
@@ -436,6 +438,123 @@ class TextAnimation {
 			
 			/* Filling Text */
 			canvasCTX.fillStyle = `rgba(${rgbColor.red},${rgbColor.green},${rgbColor.blue}, ${this.alphaTransparent})`; //this.textColor;	
+			// canvasCTX.fillStyle = this.textColor;
+			canvasCTX.fillText(newTempLine, this.x,this.y);	
+
+			// applying underline font style
+			if (this.fontStyle.indexOf('underline') !== -1) {
+				// default co-ordinates will be followed for left text alignment	
+				let underlineX = this.x;
+				// measuring width metrics for new processed line text
+				lineWidth = canvasCTX.measureText(newTempLine).width;
+				// setting underline color as same as text color
+				canvasCTX.fillStyle = this.textColor;			
+				// underline x co-ordinate will be differs for right and center alignment
+				if (this.textAlignment == 'right') {
+					underlineX = (canvas.width - this.paddingX) - lineWidth;
+				} else if (this.textAlignment == 'center') {
+					underlineX = Number(this.x) - Number(lineWidth / 2);					
+				}			
+
+				// filling rectangular line as an underline below to text
+				canvasCTX.fillRect(underlineX, Number(this.y) + this.underlineHeightSpace, lineWidth, this.underlineBarHeight);					
+			}
+
+			this.y += Number(tempLineHeight) + Number(this.underlineHeightSpace) + Number(this.underlineBarHeight);
+		}
+	}
+
+	// zoomInOut method
+	zoomInOut(timeStamp) {
+
+		let lines;
+		let lineWidth;
+		let tempLineHeight;
+		let newTempLine;
+		let underlineHeight = 0;
+		let tempFontSize = 0;		
+
+		lines = this.inputText[this.lineIndex];
+
+		this.wrapText(lines);
+
+		lines = this.#wrappedText;
+		
+		tempLineHeight = (Number(this.fontSize) + Number(this.lineHeight));
+		this.y = Number(canvas.height/2);
+		this.y -= lines.length * 0.5 * tempLineHeight;		
+
+		// there is no text justified alignment
+		if (this.textAlignment != '') {
+			canvasCTX.textAlign = (this.textAlignment != 'justified') ? this.textAlignment : 'left';
+		}
+
+		for (let i = 0; i < lines.length; i++) {
+
+			let textFontStyle = this.fontStyle.replaceAll('underline', '').trim();
+			// setting font style
+			canvasCTX.font = `${textFontStyle} ${this.fontSize}px ${this.fontFamily}, san-serif`;	
+	        
+			lineWidth = canvasCTX.measureText(lines[i]).width;
+
+			newTempLine = lines[i];
+
+
+			// assigning x co-ordinates for right, center and justify text alignment 
+			if (this.textAlignment == 'right') {
+				this.x = (Number(this.x) + Number(canvas.width) - this.paddingX) / 2;
+			} else if (this.textAlignment == 'center') {
+				this.x = (Number(canvas.width)) / 2;
+			} else if (this.textAlignment == 'justified') {
+
+				// checking if it is an empty line
+				if (lines[i].trim() != '') {
+
+					// getting free space width metrics
+					let noOfFreeSpaces = (canvas.width - this.paddingX) - lineWidth;
+
+					// proceeds only if any whitespace
+					if (lines[i].indexOf(' ') !== -1) {
+
+						// getting number of whitespace in the line
+						let noOfWhiteSpaces = lines[i].match(/([\s]+)/g).length;
+
+						// if it has atleast one whitespace to proceed
+						if (noOfFreeSpaces > 0) {
+							
+							// measuring single whitespace width metric for text style
+							let whiteSpaceWidth = canvasCTX.measureText(' ').width;
+
+							// calculating new white space counts
+							let newWhiteSpaces = Math.ceil((noOfFreeSpaces / noOfWhiteSpaces) / whiteSpaceWidth);
+							
+							// appending and sharing equal whitespaces to all whitespaces in the line
+							let whiteSpaces = '';
+							for (let _i = 0; _i < newWhiteSpaces; _i++) {
+								whiteSpaces += ' ';
+							}
+
+							newTempLine = lines[i].trim();
+							newTempLine = newTempLine.replace(/\s/g, whiteSpaces);
+						}						
+					}
+				}
+
+			}
+
+			/* FadeIn Effect */
+			if (timeStamp - this.lastTimeStamp < this.inTransitionDuration) {				
+				tempFontSize = this.fontSize * (Number(timeStamp - this.lastTimeStamp) / Number(this.inTransitionDuration));
+			} else if (timeStamp - this.lastTimeStamp < Number(this.inTransitionDuration) + Number(this.animationDuration)) { /* Static Color */
+				tempFontSize = this.fontSize;		
+			} else if (timeStamp - this.lastTimeStamp < this.totalCurrentAnimationDuration) { /* FadeOut Effect */
+				tempFontSize = this.fontSize - (this.fontSize * (Number(timeStamp - this.lastTimeStamp - this.inTransitionDuration - this.animationDuration) / Number(this.outTransitionDuration)));	
+			}
+		
+			// setting font style
+			canvasCTX.font = `${textFontStyle} ${tempFontSize}px ${this.fontFamily}, san-serif`;
+			/* Filling Text */
+			canvasCTX.fillStyle = this.textColor;
 			// canvasCTX.fillStyle = this.textColor;
 			canvasCTX.fillText(newTempLine, this.x,this.y);	
 
