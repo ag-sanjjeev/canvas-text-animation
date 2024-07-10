@@ -47,6 +47,7 @@ const textAlignment = document.getElementById('textAlignment');
 const textColor = document.getElementById('textColor');
 const backgroundColor = document.getElementById('backgroundColor');
 
+const setFontButton = document.getElementById('setFontButton');
 const setDeviceWidthButton = document.getElementById('setDeviceWidthButton');
 const setDeviceHeightButton = document.getElementById('setDeviceHeightButton');
 const playButton = document.getElementById('playButton');
@@ -70,6 +71,7 @@ const animationEndEvent = new CustomEvent('animationEnded', {
 /* Class PreferenceHandler */
 class PreferenceHandler {
 	constructor() {
+		this._fontFamily = null;
 		this._animationObject = null;
 		this._animationFrameReference = null;
 		this._stream = null;
@@ -120,6 +122,15 @@ class PreferenceHandler {
 
 	get getVideoChunks() {
 		return this._videoChunks;
+	}
+
+	// set and get method for fontFamily property
+	set setFontFamily(fontFamily) {
+		this._fontFamily = fontFamily;
+	}
+
+	get getFontFamily() {
+		return this._fontFamily;
 	}
 }
 
@@ -907,6 +918,38 @@ textColor.addEventListener('input', function(e) {
 // backgroundColor input event listener
 backgroundColor.addEventListener('input', function(e) {
 	setLocalStorage('text-animation.backgroundColor', backgroundColor.value);
+});
+
+// setFontButton click event listener
+setFontButton.addEventListener('click', function() {
+  let fontFamily = textFontFamily.value.trim();
+
+  // Basic validation (optional)
+  if (!fontFamily) {
+    return; // Handle empty input
+  }
+
+  // Construct the Google Fonts URL based on user input
+  const fontUrl = `https://fonts.googleapis.com/css2?family=${fontFamily.replaceAll(' ', '+')}:wght@300;400;700&display=swap`;
+
+  const canvasFontLink = document.getElementById('canvasFontLink');
+
+  if (canvasFontLink == null || canvasFontLink == undefined) {
+	  // Create a new link element dynamically
+	  const link = document.createElement('link');
+	  link.href = fontUrl;
+	  link.id = 'canvasFontLink';
+	  link.rel = 'stylesheet';
+	  link.media = 'all';
+
+	  // Inject the link into the head of the document
+	  document.head.appendChild(link);
+  } else {
+  	canvasFontLink.href = fontUrl;
+  }
+
+  prefObj.fontFamily = fontFamily;
+
 });
 
 // playButton click event listener
