@@ -67,17 +67,6 @@ const animationEndEvent = new CustomEvent('animationEnded', {
 	}
 });
 
-const easeInCubic = (t) => t * t * t;
-
-let startTime = null;
-// Easing function (easeInOutQuad) for smoother animation
-Math.easeInOutQuad = function (t, b, c) {
-    t /= (Number(inTransitionDuration.value) + Number(animationDuration.value) + Number(outTransitionDuration.value)) / 2;
-    if (t < 1) return c / 2 * t * t + b;
-    t--;
-    return -c / 2 * (t * (t - 2) - 1) + b;
-};
-
 /* Class PreferenceHandler */
 class PreferenceHandler {
 	constructor() {
@@ -85,7 +74,6 @@ class PreferenceHandler {
 		this._animationFrameReference = null;
 		this._stream = null;
 		this._recorder = null;
-		this._recorderTimes = [];
 		this._videoChunks = [];
 	}
 
@@ -125,15 +113,6 @@ class PreferenceHandler {
 		return this._recorder;
 	}
 
-	// set and get method for recorderTimes property
-	set setRecorderTimes(times) {
-		this._recorderTimes = times;
-	}
-
-	get getRecorderTimes() {
-		return this._recorderTimes;
-	}
-
 	// set and get method for videoChunks property
 	set setVideoChunks(videoChunks) {
 		this._videoChunks = videoChunks;
@@ -146,6 +125,27 @@ class PreferenceHandler {
 
 /* Initiating PreferenceHandler */
 const prefObj = new PreferenceHandler();
+
+/* Setting Preferences function*/
+function setPreference() {
+	inputText.value = (getLocalStorage('text-animation.inputText') == null) ? inputText.value : getLocalStorage('text-animation.inputText'); 
+	canvasWidth.value = (getLocalStorage('text-animation.canvasWidth') == null) ? canvasWidth.value : getLocalStorage('text-animation.canvasWidth'); 
+	canvasHeight.value = (getLocalStorage('text-animation.canvasHeight') == null) ? canvasHeight.value : getLocalStorage('text-animation.canvasHeight'); 
+	transition.value = (getLocalStorage('text-animation.transition') == null) ? transition.options[0].value : getLocalStorage('text-animation.transition'); 
+	inTransitionDuration.value = (getLocalStorage('text-animation.inTransitionDuration') == null) ? inTransitionDuration.value : getLocalStorage('text-animation.inTransitionDuration'); 
+	outTransitionDuration.value = (getLocalStorage('text-animation.outTransitionDuration') == null) ? outTransitionDuration.value : getLocalStorage('text-animation.outTransitionDuration'); 
+	animationDuration.value = (getLocalStorage('text-animation.animationDuration') == null) ? animationDuration.value : getLocalStorage('text-animation.animationDuration'); 
+	fps.value = (getLocalStorage('text-animation.fps') == null) ? fps.value : getLocalStorage('text-animation.fps'); 
+	paddingX.value = (getLocalStorage('text-animation.paddingX') == null) ? paddingX.value : getLocalStorage('text-animation.paddingX'); 
+	paddingY.value = (getLocalStorage('text-animation.paddingY') == null) ? paddingY.value : getLocalStorage('text-animation.paddingY'); 
+	lineHeight.value = (getLocalStorage('text-animation.lineHeight') == null) ? lineHeight.value : getLocalStorage('text-animation.lineHeight'); 
+	fontSize.value = (getLocalStorage('text-animation.fontSize') == null) ? fontSize.value : getLocalStorage('text-animation.fontSize'); 
+	textFontFamily.value = (getLocalStorage('text-animation.textFontFamily') == null) ? textFontFamily.value : getLocalStorage('text-animation.textFontFamily'); 
+	fontStyle.value = (getLocalStorage('text-animation.fontStyle') == null) ? fontStyle.options[0].value : getLocalStorage('text-animation.fontStyle'); 
+	textAlignment.value = (getLocalStorage('text-animation.textAlignment') == null) ? textAlignment.options[0].value : getLocalStorage('text-animation.textAlignment'); 
+	textColor.value = (getLocalStorage('text-animation.textColor') == null) ? textColor.value : getLocalStorage('text-animation.textColor'); 
+	backgroundColor.value = (getLocalStorage('text-animation.backgroundColor') == null) ? backgroundColor.value : getLocalStorage('text-animation.backgroundColor'); 
+}
 
 /* class TextAnimation */
 class TextAnimation {
@@ -666,8 +666,7 @@ class TextAnimation {
 
 			/* ZoomIn Effect */
 			this.scaleSize = (Number(timeStamp - this.lastTimeStamp) / Number(this.totalCurrentAnimationDuration));
-			this.scaleSize += Math.exp(this.scaleSize * (this.scaleSize * 5)) - 1;
-			console.log(this.scaleSize);
+			this.scaleSize += Math.exp(this.scaleSize * (this.scaleSize * 5)) - 1;			
 
 			canvasCTX.save();
 			canvasCTX.translate(canvas.width / 2, canvas.height / 2);
@@ -815,9 +814,100 @@ function setCanvasBackground(color='') {
 }
 
 /* Event Listeners */
-// textColor change event listener
+// inputText input event listener
+inputText.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.inputText', inputText.value);
+});
 
+// canvasWidth input event listener
+canvasWidth.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.canvasWidth', canvasWidth.value);
+});
 
+// setDeviceWidthButton click event listener 
+setDeviceWidthButton.addEventListener('click', function(e) {
+	canvasWidth.value = window.outerWidth;
+});
+
+// canvasHeight input event listener
+canvasHeight.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.canvasHeight', canvasHeight.value);
+});
+
+// setDeviceHeightButton click event listener 
+setDeviceHeightButton.addEventListener('click', function(e) {
+	canvasHeight.value = window.outerHeight;
+});
+
+// transition change event listener
+transition.addEventListener('change', function(e) {
+	setLocalStorage('text-animation.transition', transition.value);
+});
+
+// inTransitionDuration input event listener
+inTransitionDuration.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.inTransitionDuration', inTransitionDuration.value);
+});
+
+// outTransitionDuration input event listener
+outTransitionDuration.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.outTransitionDuration', outTransitionDuration.value);
+});
+
+// animationDuration input event listener
+animationDuration.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.animationDuration', animationDuration.value);
+});
+
+// fps input event listener
+fps.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.fps', fps.value);
+});
+
+// paddingX input event listener
+paddingX.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.paddingX', paddingX.value);
+});
+
+// paddingY input event listener
+paddingY.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.paddingY', paddingY.value);
+});
+
+// lineHeight input event listener
+lineHeight.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.lineHeight', lineHeight.value);
+});
+
+// fontSize input event listener
+fontSize.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.fontSize', fontSize.value);
+});
+
+// textFontFamily input event listener
+textFontFamily.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.textFontFamily', textFontFamily.value);
+});
+
+// fontStyle change event listener
+fontStyle.addEventListener('change', function(e) {
+	setLocalStorage('text-animation.fontStyle', fontStyle.value);
+});
+
+// textAlignment change event listener
+textAlignment.addEventListener('change', function(e) {
+	setLocalStorage('text-animation.textAlignment', textAlignment.value);
+});
+
+// textColor input event listener
+textColor.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.textColor', textColor.value);
+});
+
+// backgroundColor input event listener
+backgroundColor.addEventListener('input', function(e) {
+	setLocalStorage('text-animation.backgroundColor', backgroundColor.value);
+});
 
 // playButton click event listener
 playButton.addEventListener('click', function(e) {
@@ -837,6 +927,54 @@ playButton.addEventListener('click', function(e) {
 	}
 });
 
+// recordButton click event listener
+recordButton.addEventListener('click', function(e) {
+	// getting current state from button text
+	let state = recordButton.innerText.toLowerCase();
+
+	// if it is stopped stage then start capturing and change the button text as stop record
+	if (state == 'start record') {
+		// creating and setting stream captureStream with given fps value
+		prefObj.stream = canvas.captureStream(fps.value);
+		// creating and setting MediaRecorder with created stream input
+		prefObj.recorder = new MediaRecorder(prefObj.stream);
+		// initialize with empty value for recording
+		prefObj.videoChunks = [];
+		prefObj.recorderTimes = [];
+		// setting events to store video chunks
+		prefObj.recorder.ondataavailable = (e) => prefObj.videoChunks.push(e.data);
+		// setting events to stop
+		prefObj.recorder.onstop = () => {
+			// creating and setting new Blob from chunks with supported video file type
+			const videoBlob = new Blob(prefObj.videoChunks, { type: 'video/webm' });
+			// creating and setting objectURL for download 
+			const videoUrl = URL.createObjectURL(videoBlob);
+
+			// Create a downloadable link
+			const link = document.createElement('a');
+			link.href = videoUrl;
+			link.download = `canvas_video-T${Date.now()}.webm`;
+			link.click();
+
+			// Revoke object URL to avoid memory leaks
+			URL.revokeObjectURL(videoUrl);
+
+		};
+
+		// starting recorder
+		prefObj.recorder.start();
+		// setting button text as stop record
+		recordButton.innerText = 'Stop Record';	
+
+	} else if (state == 'stop record'){ // if it is recording stage then stop capturing and change the button text as start record
+		// stopping recorder
+		prefObj.recorder.stop();
+		// setting button text as start record
+		recordButton.innerText = 'Start Record';
+	}
+
+});
+
 // fullScreen click event listener
 fullScreen.addEventListener('click', function(e) {
 	canvas.requestFullscreen();
@@ -847,6 +985,7 @@ window.addEventListener('animationEnded', function() {
 }, false);
 
 window.addEventListener('load', function() {
+	setPreference();
 	setCanvasSize();
 	setCanvasBackground();
 }, false);
